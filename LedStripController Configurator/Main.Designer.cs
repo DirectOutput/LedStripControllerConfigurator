@@ -34,6 +34,9 @@
             this.StripControllerDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StripControllerNumber = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StripControllerSerial = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StripControllerHasBootLoader = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.StripControllerBootLoaderVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.StripControllerCPU = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OtherDeviceList = new System.Windows.Forms.DataGridView();
             this.OtherDeviceDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.OtherDeviceSerial = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,12 +44,15 @@
             this.ChangeControllerNumber = new System.Windows.Forms.Button();
             this.RefreshLists = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.InstallFirmwareButton = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.StripControllerList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OtherDeviceList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // StripControllerList
@@ -61,7 +67,10 @@
             this.StripControllerList.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.StripControllerDescription,
             this.StripControllerNumber,
-            this.StripControllerSerial});
+            this.StripControllerSerial,
+            this.StripControllerHasBootLoader,
+            this.StripControllerBootLoaderVersion,
+            this.StripControllerCPU});
             this.StripControllerList.Location = new System.Drawing.Point(3, 3);
             this.StripControllerList.MultiSelect = false;
             this.StripControllerList.Name = "StripControllerList";
@@ -96,6 +105,26 @@
             this.StripControllerSerial.Name = "StripControllerSerial";
             this.StripControllerSerial.ReadOnly = true;
             this.StripControllerSerial.Width = 58;
+            // 
+            // StripControllerHasBootLoader
+            // 
+            this.StripControllerHasBootLoader.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.StripControllerHasBootLoader.HeaderText = "BootLoader";
+            this.StripControllerHasBootLoader.Name = "StripControllerHasBootLoader";
+            this.StripControllerHasBootLoader.ReadOnly = true;
+            this.StripControllerHasBootLoader.Width = 68;
+            // 
+            // StripControllerBootLoaderVersion
+            // 
+            this.StripControllerBootLoaderVersion.HeaderText = "Bootloader Version";
+            this.StripControllerBootLoaderVersion.Name = "StripControllerBootLoaderVersion";
+            this.StripControllerBootLoaderVersion.ReadOnly = true;
+            // 
+            // StripControllerCPU
+            // 
+            this.StripControllerCPU.HeaderText = "CPU";
+            this.StripControllerCPU.Name = "StripControllerCPU";
+            this.StripControllerCPU.ReadOnly = true;
             // 
             // OtherDeviceList
             // 
@@ -176,6 +205,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.InstallFirmwareButton);
             this.splitContainer1.Panel1.Controls.Add(this.StripControllerList);
             this.splitContainer1.Panel1.Controls.Add(this.ChangeControllerNumber);
             // 
@@ -184,9 +214,31 @@
             this.splitContainer1.Panel2.Controls.Add(this.OtherDeviceList);
             this.splitContainer1.Panel2.Controls.Add(this.RefreshLists);
             this.splitContainer1.Panel2.Controls.Add(this.DefineAsLedStripController);
+            this.splitContainer1.Panel2.Controls.Add(this.pictureBox1);
             this.splitContainer1.Size = new System.Drawing.Size(534, 466);
             this.splitContainer1.SplitterDistance = 233;
             this.splitContainer1.TabIndex = 5;
+            // 
+            // InstallFirmwareButton
+            // 
+            this.InstallFirmwareButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.InstallFirmwareButton.Location = new System.Drawing.Point(237, 207);
+            this.InstallFirmwareButton.Name = "InstallFirmwareButton";
+            this.InstallFirmwareButton.Size = new System.Drawing.Size(132, 23);
+            this.InstallFirmwareButton.TabIndex = 4;
+            this.InstallFirmwareButton.Text = "Install Firmware";
+            this.InstallFirmwareButton.UseVisualStyleBackColor = true;
+            this.InstallFirmwareButton.Click += new System.EventHandler(this.InstallFirmwareButton_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(3, 154);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(109, 75);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // Main
             // 
@@ -204,6 +256,7 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -212,15 +265,20 @@
 
         private System.Windows.Forms.DataGridView StripControllerList;
         private System.Windows.Forms.DataGridView OtherDeviceList;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerDescription;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerNumber;
-        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerSerial;
         private System.Windows.Forms.DataGridViewTextBoxColumn OtherDeviceDescription;
         private System.Windows.Forms.DataGridViewTextBoxColumn OtherDeviceSerial;
         private System.Windows.Forms.Button DefineAsLedStripController;
         private System.Windows.Forms.Button ChangeControllerNumber;
         private System.Windows.Forms.Button RefreshLists;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Button InstallFirmwareButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerDescription;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerNumber;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerSerial;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn StripControllerHasBootLoader;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerBootLoaderVersion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerCPU;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 

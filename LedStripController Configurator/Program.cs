@@ -7,6 +7,7 @@ namespace LedStripController_Configurator
 {
     static class Program
     {
+   
         /// <summary>
         /// Der Haupteinstiegspunkt für die Anwendung.
         /// </summary>

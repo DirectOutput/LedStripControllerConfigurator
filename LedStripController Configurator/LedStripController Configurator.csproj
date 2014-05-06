@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AVRTypeEnum.cs" />
+    <Compile Include="BootLoader.cs" />
     <Compile Include="DefineLedStripController.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -61,6 +63,15 @@
     </Compile>
     <Compile Include="ControllerNumberChange.Designer.cs">
       <DependentUpon>ControllerNumberChange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HexFile.cs" />
+    <Compile Include="HexFileLine.cs" />
+    <Compile Include="HexFilerReader.cs" />
+    <Compile Include="InstallFirmware.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstallFirmware.Designer.cs">
+      <DependentUpon>InstallFirmware.cs</DependentUpon>
     </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
@@ -76,11 +87,17 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TablessTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <EmbeddedResource Include="DefineLedStripController.resx">
       <DependentUpon>DefineLedStripController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ControllerNumberChange.resx">
       <DependentUpon>ControllerNumberChange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstallFirmware.resx">
+      <DependentUpon>InstallFirmware.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
@@ -97,6 +114,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

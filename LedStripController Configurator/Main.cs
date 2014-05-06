@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using FTD2XX;
+using System.Threading;
 
 namespace LedStripController_Configurator
 {
     public partial class Main : Form
     {
-        const string LedStripControllerDeviceDescriptionBase = "WS2811 Strip Controller ";
 
         public Main()
         {
@@ -25,7 +25,7 @@ namespace LedStripController_Configurator
         }
 
 
-
+  
         private void PopulateDeviceLists()
         {
             StripControllerList.Rows.Clear();
@@ -46,20 +46,32 @@ namespace LedStripController_Configurator
                     State = F.GetDeviceList(Devicelist);
                     if (State == FTDI.FT_STATUS.FT_OK)
                     {
-                        
+
                         StripControllerList.Rows.Clear();
-                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && DE.Description.StartsWith(LedStripControllerDeviceDescriptionBase)).OrderBy(Co=>Co.Description))
+                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && DE.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase)).OrderBy(Co => Co.Description))
                         {
                             int RowIndex = StripControllerList.Rows.Add();
                             StripControllerList.Rows[RowIndex].Tag = D;
                             StripControllerList.Rows[RowIndex].Cells[StripControllerDescription.Name].Value = D.Description;
-                            StripControllerList.Rows[RowIndex].Cells[StripControllerNumber.Name].Value = D.Description.Substring(LedStripControllerDeviceDescriptionBase.Length);
+                            StripControllerList.Rows[RowIndex].Cells[StripControllerNumber.Name].Value = D.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Length);
                             StripControllerList.Rows[RowIndex].Cells[StripControllerSerial.Name].Value = D.SerialNumber;
+                            StripControllerList.Rows[RowIndex].Cells[StripControllerHasBootLoader.Name].Value = false;
+                            BootLoader B = new BootLoader();
+                            try
+                            {
+                                B.Open(D);
+                                B.StartBootLoader();
+                                StripControllerList.Rows[RowIndex].Cells[StripControllerHasBootLoader.Name].Value = B.BootLoaderStarted;
+                                StripControllerList.Rows[RowIndex].Cells[StripControllerBootLoaderVersion.Name].Value = B.GetBootloaderVersion();
+                                StripControllerList.Rows[RowIndex].Cells[StripControllerCPU.Name].Value = B.GetControllerCPU();
+                            }
+                            catch { }
+                            B.Close();
                         }
                         StripControllerList.ClearSelection();
-                        
+
                         OtherDeviceList.Rows.Clear();
-                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && !DE.Description.StartsWith(LedStripControllerDeviceDescriptionBase)))
+                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && !DE.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase)))
                         {
                             int RowIndex = OtherDeviceList.Rows.Add();
                             OtherDeviceList.Rows[RowIndex].Tag = D;
@@ -87,7 +99,7 @@ namespace LedStripController_Configurator
             else
             {
                 //Error when getting count of devices
-                MessageBox.Show(this, "Could not get number of connected devices","Exception",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(this, "Could not get number of connected devices", "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             UpdateSelectionDependencies();
         }
@@ -125,7 +137,7 @@ namespace LedStripController_Configurator
 
                             FTDI F = new FTDI();
 
-                            uint OrgDevCount=0;
+                            uint OrgDevCount = 0;
                             F.GetNumberOfDevices(ref OrgDevCount);
 
 
@@ -134,7 +146,7 @@ namespace LedStripController_Configurator
 
                                 if (F.ReadFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                 {
-                                    EE.Description = LedStripControllerDeviceDescriptionBase + Nr.ToString();
+                                    EE.Description = Properties.Settings.Default.LedStripControllerDeviceDescriptionBase + Nr.ToString();
 
                                     if (F.WriteFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                     {
@@ -152,26 +164,28 @@ namespace LedStripController_Configurator
                                     //Could not read eeprom
                                     MessageBox.Show(this, "Reading data from device with serial " + CurrentOtherDevice.SerialNumber + " failed.\nCould not define LedStrip Controller.", "Define LedStrip controller failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
-                               
-                               
+
+
                                 if (F.CyclePort() != FTDI.FT_STATUS.FT_OK)
                                 {
                                     //Close failed
                                     MessageBox.Show(this, "A error occured when closing device with serial " + CurrentOtherDevice.SerialNumber + " .\nPlease check if the definition process has been successfull.", "Define LedStrip controller error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
-                  
+
                                 DateTime Start = DateTime.Now;
-                                
-                                uint NewDeviceCount=0;
-                                FTDI.FT_DEVICE_INFO_NODE[] N=new FTDI.FT_DEVICE_INFO_NODE[0];
-                                do{
+
+                                uint NewDeviceCount = 0;
+                                FTDI.FT_DEVICE_INFO_NODE[] N = new FTDI.FT_DEVICE_INFO_NODE[0];
+                                do
+                                {
                                     F.GetNumberOfDevices(ref NewDeviceCount);
-                                    if(NewDeviceCount==OrgDevCount) {
-                                      N = new FTDI.FT_DEVICE_INFO_NODE[NewDeviceCount];
-                                      F.GetDeviceList(N);
+                                    if (NewDeviceCount == OrgDevCount)
+                                    {
+                                        N = new FTDI.FT_DEVICE_INFO_NODE[NewDeviceCount];
+                                        F.GetDeviceList(N);
                                     }
 
-                                } while (NewDeviceCount!=OrgDevCount || !N.All(Dev=>Dev!=null && Dev.SerialNumber!=null && Dev.SerialNumber.Length>0) || (DateTime.Now-Start).Seconds>15);
+                                } while (NewDeviceCount != OrgDevCount || !N.All(Dev => Dev != null && Dev.SerialNumber != null && Dev.SerialNumber.Length > 0) || (DateTime.Now - Start).Seconds > 15);
 
                                 F = null;
 
@@ -222,8 +236,9 @@ namespace LedStripController_Configurator
             List<string> N = new List<string>();
 
             for (uint i = 1; i <= Max; i++)
-			{
-			    if(!E.Contains(i) ) {
+            {
+                if (!E.Contains(i))
+                {
                     N.Add(i.ToString());
                 }
                 else if (CurrentNumber.HasValue && i == CurrentNumber.Value)
@@ -231,7 +246,7 @@ namespace LedStripController_Configurator
                     N.Add(i.ToString() + " (Current)");
                 };
 
-			}
+            }
 
             return N;
         }
@@ -257,11 +272,13 @@ namespace LedStripController_Configurator
             {
                 CurrentStripController = (FTDI.FT_DEVICE_INFO_NODE)StripControllerList.SelectedRows[0].Tag;
                 ChangeControllerNumber.Enabled = true;
+                InstallFirmwareButton.Enabled = true;
             }
             else
             {
                 CurrentStripController = null;
                 ChangeControllerNumber.Enabled = false;
+                InstallFirmwareButton.Enabled = false;
             }
             if (OtherDeviceList.SelectedRows.Count > 0)
             {
@@ -283,7 +300,7 @@ namespace LedStripController_Configurator
             if (CurrentStripController != null)
             {
 
-                uint CurrentNumber = Convert.ToUInt32(CurrentStripController.Description.Substring(LedStripControllerDeviceDescriptionBase.Length));
+                uint CurrentNumber = Convert.ToUInt32(CurrentStripController.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Length));
 
                 ControllerNumberChange D = new ControllerNumberChange(CurrentStripController, CurrentNumber, GetValidNumbers(CurrentNumber));
 
@@ -316,7 +333,7 @@ namespace LedStripController_Configurator
 
                                 if (F.ReadFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                 {
-                                    EE.Description = LedStripControllerDeviceDescriptionBase + Nr.ToString();
+                                    EE.Description = Properties.Settings.Default.LedStripControllerDeviceDescriptionBase + Nr.ToString();
 
                                     if (F.WriteFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                     {
@@ -398,17 +415,36 @@ namespace LedStripController_Configurator
             W.Show(this);
             W.Refresh();
 
-            FTDI F = new FTDI();
-            F.Rescan();
+            // FTDI F = new FTDI();
+            //Thread.Sleep(1000);
+            //  F.Rescan();
+            //  F.CyclePort();
 
-            F = null;
+            //   F = null;
 
             PopulateDeviceLists();
             W.Close();
             W = null;
         }
 
- 
+        private void InstallFirmwareButton_Click(object sender, EventArgs e)
+        {
+            InstallFirmware I = new InstallFirmware(CurrentStripController);
+
+            string FirmwareFilename = "";
+            if (I.ShowDialog() == DialogResult.OK)
+            {
+        
+            }
+            I.Close();
+            I.Dispose();
+
+
+
+
+        }
+
+
 
     }
 }
