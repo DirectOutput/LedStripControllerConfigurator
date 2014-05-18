@@ -54,7 +54,7 @@ namespace LedStripController_Configurator
                 ControllerConfirm.Enabled = false;
                 ControllerConfirm.Checked = false;
 
-                ControllerMessage.Text = "Controller not accessible. Cant install firmware.\nTo try again, close this window, unplug and plugin the controller again and the refreshbutton in the main window.";
+                ControllerMessage.Text = "Controller not accessible. Cant install firmware.\nTo try again, close this window, make sure no other applications are accessing the controller, unplug and plugin the controller again and finnaly click the refresh button in the main window.";
 
             }
             B.Close();

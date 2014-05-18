@@ -222,16 +222,17 @@
             // InstallFirmwareButton
             // 
             this.InstallFirmwareButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InstallFirmwareButton.Location = new System.Drawing.Point(237, 207);
+            this.InstallFirmwareButton.Location = new System.Drawing.Point(228, 207);
             this.InstallFirmwareButton.Name = "InstallFirmwareButton";
-            this.InstallFirmwareButton.Size = new System.Drawing.Size(132, 23);
+            this.InstallFirmwareButton.Size = new System.Drawing.Size(141, 23);
             this.InstallFirmwareButton.TabIndex = 4;
-            this.InstallFirmwareButton.Text = "Install Firmware";
+            this.InstallFirmwareButton.Text = "Install or update Firmware";
             this.InstallFirmwareButton.UseVisualStyleBackColor = true;
             this.InstallFirmwareButton.Click += new System.EventHandler(this.InstallFirmwareButton_Click);
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.Location = new System.Drawing.Point(3, 154);
             this.pictureBox1.Name = "pictureBox1";
