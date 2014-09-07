@@ -20,8 +20,8 @@ namespace LedStripController_Configurator
             get { return this._RecordType; }
         }
         // Zieladresse der Daten
-        private System.UInt16 _Address = 0;
-        public System.UInt16 Address
+        private System.UInt32 _Address = 0;
+        public System.UInt32 Address
         {
             get { return this._Address; }
         }
@@ -75,7 +75,7 @@ namespace LedStripController_Configurator
                 case HexFile.HexFileRecordType.EndOfFileRecord:
                     break;
                 case HexFile.HexFileRecordType.ExtendedSegmentAddressRecord:
-                    this._Address = (System.UInt16)(Convert.ToUInt16(vsLine.Substring(HexFileLine.DataOffset, 4), 16) * 16);
+                    this._Address = (System.UInt32)(Convert.ToUInt16(vsLine.Substring(HexFileLine.DataOffset, 4), 16) * 16);
                     break;
                 default:
                     throw new Exception(string.Format("Recordtype '0X{0:X2}' is not supported", this._RecordType));

@@ -37,7 +37,7 @@ namespace LedStripController_Configurator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("LedstripController")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Direct Strip Controller")]
         public string BootLoaderPassword {
             get {
                 return ((string)(this["BootLoaderPassword"]));

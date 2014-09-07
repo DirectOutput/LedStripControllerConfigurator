@@ -6,7 +6,7 @@
       <Value Profile="(Default)">WS2811 Strip Controller </Value>
     </Setting>
     <Setting Name="BootLoaderPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">LedstripController</Value>
+      <Value Profile="(Default)">Direct Strip Controller</Value>
     </Setting>
   </Settings>
 </SettingsFile>

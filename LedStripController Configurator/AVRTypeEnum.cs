@@ -75,6 +75,7 @@ namespace LedStripController_Configurator
         ATMEGA325 = 0x1e9505,
         ATMEGA645 = 0x1E9605,
         ATMEGA3250 = 0x1E9506,
-        ATMEGA6450 = 0x1E9606
+        ATMEGA6450 = 0x1E9606,
+        ATMEGA1284P=0x1E9705
     }
 }

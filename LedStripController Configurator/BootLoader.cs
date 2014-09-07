@@ -168,19 +168,21 @@ namespace LedStripController_Configurator
                 Send((byte)'Z');
 
                 Start = DateTime.Now;
-                while (BytesWaiting() == 0 && (DateTime.Now - Start).TotalMilliseconds < 30)
+                while (BytesWaiting() == 0 && (DateTime.Now - Start).TotalMilliseconds < 100)
                 {
                     Thread.Sleep(1);
                 }
                 if (BytesWaiting() == 0)
                 {
-                    for (int i = 0; i < 200; i++)
+                    for (int i = 0; i < 400; i++)
                     {
                         Send(new byte[50]);
                         Thread.Sleep(10);
                         ReceiveBuffer = ReadAll();
                         if (ReceiveBuffer.Length > 0 && ReceiveBuffer[ReceiveBuffer.Length - 1] == 'N') break;
                     }
+                    Thread.Sleep(20);
+                    ReadAll();
                     Send((byte)'Z');
                     Start = DateTime.Now;
                     while (BytesWaiting() == 0 && (DateTime.Now - Start).TotalMilliseconds < 30)
@@ -200,7 +202,7 @@ namespace LedStripController_Configurator
 
                 switch (ReceiveBuffer[0])
                 {
-                    case (byte)'P':
+                    case (byte)'O':
                         //Bootloader expects password
                         break;
                     case (byte)'A':
@@ -217,11 +219,12 @@ namespace LedStripController_Configurator
                 TriedTimes++;
             } while (TriedTimes < 3 && TryAgain == true);
 
-            if (ReceiveBuffer[0] != 'P')
+            if (ReceiveBuffer[0] != 'O')
             {
-                throw new Exception("Bootloader password request char (P) not received.");
+                throw new Exception("Could not start bootloader.");
             }
 
+            Send((byte)'B');
             Send(Properties.Settings.Default.BootLoaderPassword);
 
             Start = DateTime.Now;
@@ -229,28 +232,29 @@ namespace LedStripController_Configurator
             {
                 Thread.Sleep(1);
             }
+            Thread.Sleep(1);
 
             ReceiveBuffer = ReadAll();
             if (ReceiveBuffer.Length == 0)
             {
-                throw new Exception("No answer received after password");
+                throw new Exception("No answer received after password.");
             }
             else if (ReceiveBuffer.Length > 1)
             {
                 //PW was likely wrong
-                throw new Exception("Password has not been accepted by the controller");
+                throw new Exception("Password has not been accepted by the controller. Password was likely wrong.");
             }
-            else if (ReceiveBuffer[0] != 'A')
+            else if (ReceiveBuffer[0] != 'O')
             {
                 //No connect received. PW likely wrong.
-                throw new Exception("No ack received after password. Password was likely wrong.");
+                throw new Exception("No OK received after password. Password was likely wrong.");
             }
             BootLoaderStarted = true;
 
         }
 
 
-        public double GetBootloaderVersion()
+        public string GetBootloaderVersion()
         {
 
             if (!BootLoaderStarted)
@@ -258,25 +262,21 @@ namespace LedStripController_Configurator
                 throw new Exception("Bootloader has not been started.");
             }
             ReadAll();
-            Send(new byte[] { (byte)'C', 1 });
+            Send((byte)'2');
 
             DateTime Start = DateTime.Now;
             do
             {
                 Thread.Sleep(10);
-            } while (BytesWaiting() < 4 && (DateTime.Now - Start).TotalMilliseconds < 30);
+            } while (BytesWaiting() < 2 && (DateTime.Now - Start).TotalMilliseconds < 30);
             byte[] ReceiveBuffer = ReadAll();
 
-            if (ReceiveBuffer.Length == 5 && ReceiveBuffer[0] == '>' && ReceiveBuffer[1] == 3 && ReceiveBuffer[3] < 100 && ReceiveBuffer[4] == 'A')
-            {
-
-                return (double)ReceiveBuffer[2] + ((double)ReceiveBuffer[3] / 100);
-
-            }
-            else
+            if (ReceiveBuffer.Length < 3 || ReceiveBuffer[0] != ReceiveBuffer.Length - 1 || ReceiveBuffer[ReceiveBuffer.Length - 1] != (byte)'O')
             {
                 throw new Exception("Could not read bootloader version");
             }
+
+            return System.Text.Encoding.UTF8.GetString(ReceiveBuffer.Where((B, I) => I > 0 && I < ReceiveBuffer.Length - 1).ToArray());
         }
 
 
@@ -289,7 +289,7 @@ namespace LedStripController_Configurator
             }
             ReadAll();
 
-            Send(new byte[] { (byte)'C', 2 });
+            Send((byte)'3');
             DateTime Start = DateTime.Now;
             do
             {
@@ -297,10 +297,11 @@ namespace LedStripController_Configurator
             } while (BytesWaiting() < 4 && (DateTime.Now - Start).TotalMilliseconds < 30);
             byte[] ReceiveBuffer = ReadAll();
 
-            if (ReceiveBuffer.Length == 5 && ReceiveBuffer[0] == '>' && ReceiveBuffer[1] == 3 && ReceiveBuffer[4] == 'A')
+
+            if (ReceiveBuffer.Length == 4 && ReceiveBuffer[0] == 3 && ReceiveBuffer[3] == 'O')
             {
 
-                return ReceiveBuffer[2] * 256 + ReceiveBuffer[3];
+                return ReceiveBuffer[1] * 256 + ReceiveBuffer[2];
 
             }
             else
@@ -317,7 +318,7 @@ namespace LedStripController_Configurator
             }
             ReadAll();
 
-            Send(new byte[] { (byte)'C', 3 });
+            Send((byte)'4');
             DateTime Start = DateTime.Now;
             do
             {
@@ -325,23 +326,23 @@ namespace LedStripController_Configurator
             } while (BytesWaiting() < 5 && (DateTime.Now - Start).TotalMilliseconds < 30);
             byte[] ReceiveBuffer = ReadAll();
 
-            if (ReceiveBuffer.Length == 6 && ReceiveBuffer[0] == '>' && ReceiveBuffer[1] == 4 && ReceiveBuffer[5] == 'A')
+            if (ReceiveBuffer.Length == 5 && ReceiveBuffer[0] == 4 && ReceiveBuffer[4] == 'O')
             {
-                int Signature = ReceiveBuffer[2] * 65536 + ReceiveBuffer[3] * 256 + ReceiveBuffer[4];
+                int Signature = ReceiveBuffer[1] * 65536 + ReceiveBuffer[2] * 256 + ReceiveBuffer[3];
                 if (Enum.IsDefined(typeof(AVRTypeEnum), Signature))
                 {
                     return Enum.GetName(typeof(AVRTypeEnum), Signature);
                 }
                 else
                 {
-                    return "Unknown" + ReceiveBuffer[2].ToString("X") + " " + ReceiveBuffer[3].ToString("X") + ReceiveBuffer[4].ToString("X");
+                    return "Unknown" + ReceiveBuffer[1].ToString("X") + " " + ReceiveBuffer[2].ToString("X") + ReceiveBuffer[3].ToString("X");
                 }
 
 
             }
             else
             {
-                throw new Exception("Could not read signature bytes/controller type");
+                throw new Exception("Could not read signature bytes/controller cpu");
             }
 
 
@@ -358,19 +359,19 @@ namespace LedStripController_Configurator
             }
             ReadAll();
 
-            Send(new byte[] { (byte)'C', 4 });
+            Send((byte)'5');
             DateTime Start = DateTime.Now;
             do
             {
                 Thread.Sleep(10);
-            } while (BytesWaiting() < 4 && (DateTime.Now - Start).TotalMilliseconds < 30);
+            } while (BytesWaiting() < 5 && (DateTime.Now - Start).TotalMilliseconds < 30);
             byte[] ReceiveBuffer = ReadAll();
 
 
-            if (ReceiveBuffer.Length == 6 && ReceiveBuffer[0] == '>' && ReceiveBuffer[1] == 4 && ReceiveBuffer[5] == 'A')
+            if (ReceiveBuffer.Length == 5 && ReceiveBuffer[0] == 4 && ReceiveBuffer[4] == 'O')
             {
 
-                return ReceiveBuffer[2] * 65536 + ReceiveBuffer[3] * 256 + ReceiveBuffer[4];
+                return ReceiveBuffer[1] * 65536 + ReceiveBuffer[2] * 256 + ReceiveBuffer[3];
 
             }
             else
@@ -414,7 +415,14 @@ namespace LedStripController_Configurator
             {
                 throw new Exception("Could not extract binary data from file " + FirmwareFilename, E);
             }
+            if (Data.Length == 0)
+            {
+                throw new Exception("0 Firmware bytes found in file " + FirmwareFilename);
+            }
+
+
             OnInstallProgress(10, "Data loaded. " + Data.Length + " / 0x" + Data.Length.ToString("X") + " bytes");
+
 
 
             try
@@ -434,10 +442,14 @@ namespace LedStripController_Configurator
 
             int BufferSize = GetBufferSize();
             OnInstallProgress(13, "Buffersize read: " + BufferSize + " / 0x" + BufferSize.ToString("X"));
+            if (BufferSize != 256)
+            {
+                throw new Exception("Buffersize is not 256bytes (Hardware reports " + BufferSize.ToString() + " bytes)");
+            }
 
 
             int FlashSize = GetUserFlashSize();
-            OnInstallProgress(14, "Flash size read: " + FlashSize + " / 0x"+FlashSize.ToString("X"));
+            OnInstallProgress(14, "Flash size read: " + FlashSize + " / 0x" + FlashSize.ToString("X"));
 
 
             if (FlashSize < Data.Length)
@@ -447,127 +459,151 @@ namespace LedStripController_Configurator
 
             ReadAll();
 
-            OnInstallProgress(15,  "Initializing firmware upload");
 
-            Send(new byte[] { (byte)'C', 5 });  //Send program command
+            int BlockCnt = (Data.Length >> 8) + ((Data.Length & 255) != 0 ? 1 : 0);
+            OnInstallProgress(15, string.Format("Uploading {0} blocks of firmware data.",BlockCnt));
 
-            int BlockCnt = 0;
+            DateTime Start;
+
             int Pos = 0;
-            do
-            {
-                List<byte> SendData = new List<byte>();
 
-                int L = (Data.Length - Pos < BufferSize ? Data.Length - Pos : BufferSize);
-                for (int t = Pos; t < L+Pos; t++)
+            for (int CurrentBlock = 0; CurrentBlock < BlockCnt; CurrentBlock++)
+            {
+                Pos = CurrentBlock * 256;
+
+                #region Prepare Datablock
+                byte[] DataBlock = new byte[260];
+
+                DataBlock[0] = (byte)'>';
+                DataBlock[1] = (byte)((Pos >> 16) & 255);
+                DataBlock[2] = (byte)((Pos >> 8) & 255);
+
+                Buffer.BlockCopy(Data, Pos, DataBlock, 3, (Pos + 256 <= Data.Length ? 256 : Data.Length - Pos));
+
+                byte CheckSum = 0x55;
+                for (int i = 1; i <= 258; i++)
                 {
-                    switch (Data[t])
+                    CheckSum ^= DataBlock[i];
+                }
+                DataBlock[259] = CheckSum;
+
+                #endregion
+
+                byte[] Response;
+                int BlockState = 0;
+                int TryCnt = 0;
+                const int Tries = 5;
+                do
+                {
+                    switch (BlockState)
                     {
-                        case (byte)'C':
-                            SendData.Add((byte)'C');
-                            SendData.Add((byte)'C'+0x80);
+                        case 0:
+                            Send(DataBlock);
+                            Start = DateTime.Now;
+                            while (BytesWaiting() == 0 && (DateTime.Now - Start).TotalMilliseconds < 100)
+                            {
+                                Thread.Sleep(1);
+                            }
+
+                            Response = ReadAll();
+                            if (Response.Length != 1 || Response[0] != 'O')
+                            {
+                                //Data upload failed
+                                Thread.Sleep(5);
+                                if (Response.Length > 1 || BytesWaiting() != 0)
+                                {
+                                    //Bootloader in unknown state. Restart bootloader
+                                    OnInstallProgress((int)(15 + ((double)84 / BlockCnt / 2) * ((double)CurrentBlock * 2)), string.Format("Uploading block {0} at address {1} / 0x{1:x} failed. Restarting bootloader.", CurrentBlock, Pos));
+                                    StartBootLoader();
+                                    OnInstallProgress((int)(15 + ((double)84 / BlockCnt / 2) * ((double)CurrentBlock * 2)), string.Format("Bootloader restarted.{0}", (TryCnt < Tries - 1 ? " Will try again." : "")));
+                                }
+                                else
+                                {
+                                    //only the current command has failed. just try again
+                                    OnInstallProgress((int)(15 + ((double)84 / BlockCnt / 2) * ((double)CurrentBlock * 2)), string.Format("Uploading block {0} at address {1} / 0x{1:x} failed.{2}", CurrentBlock, Pos, (TryCnt < Tries - 1 ? " Will try again." : "")));
+                                }
+                                TryCnt++;
+                            }
+                            else
+                            {
+                                //Upload is ok. Write.
+                                BlockState = 1;
+                            }
+                            OnInstallProgress((int)(15 + ((double)84 / BlockCnt / 2) * ((double)CurrentBlock * 2)));
+                            break;
+                        case 1:
+                            Send((byte)'!');
+                            Start = DateTime.Now;
+                            while (BytesWaiting() == 0 && (DateTime.Now - Start).TotalMilliseconds < 100)
+                            {
+                                Thread.Sleep(1);
+                            }
+
+                            Response = ReadAll();
+                            if (Response.Length != 1 || Response[0] != 'O')
+                            {
+                                //Data write/verify failed
+                                Thread.Sleep(5);
+
+                                if (Response.Length > 1 || BytesWaiting() != 0)
+                                {
+                                    //Bootloader in unknown state. Restart bootloader
+                                    OnInstallProgress((int)(15 + ((double)84 / BlockCnt / 2) * ((double)(CurrentBlock * 2) + 1)), string.Format("Verify of block {0} at address {1} / 0x{1:x} failed. Restarting bootloader.", CurrentBlock, Pos));
+                                    StartBootLoader();
+                                    OnInstallProgress((int)(15 + ((double)84 / BlockCnt / 2) * ((double)(CurrentBlock * 2) + 1)), string.Format("Bootloader restarted.{0}", (TryCnt < Tries - 1 ? " Will try again." : "")));
+                                    BlockState = 0;
+                                }
+                                else
+                                {
+                                    //only the current command has failed. just try again
+                                    OnInstallProgress((int)(15 + ((double)84 / BlockCnt / 2) * ((double)(CurrentBlock * 2) + 1)), string.Format("Verify of block {0} at address {1} / 0x{1:x} failed.{2}", CurrentBlock, Pos, (TryCnt < Tries - 1 ? " Will try again." : "")));
+                                }
+                                TryCnt++;
+                            }
+                            else
+                            {
+                                //Verify ok, exit loop
+                                BlockState = 2;
+
+                            }
+
+
+
                             break;
                         default:
-                            SendData.Add(Data[t]);
+                            throw new Exception("Unknown state");
                             break;
                     }
-                }
 
-                BlockCnt++;
 
-                if (L == BufferSize)
+
+                } while (BlockState < 2 && TryCnt < Tries);
+
+                if (BlockState != 2)
                 {
-                    OnInstallProgress(15+(int)(((double)Pos/Data.Length)*45), "Uploading block "+BlockCnt);
-
-                    Send(SendData.ToArray());
-
-
-                    DateTime Start = DateTime.Now;
-                    do
-                    {
-                        Thread.Sleep(10);
-                    } while (BytesWaiting() < 1 && (DateTime.Now - Start).TotalMilliseconds < 500);
-                    byte[] ReceiveBuffer = ReadAll();
-
-                    if (ReceiveBuffer.Length != 1 || ReceiveBuffer[0] != 0xA9)
-                    {
-                        throw new Exception("Installing firmware failed. No continue signal during programming.");
-
-                    }
-
+                    throw new Exception(string.Format("Upload or verify of block {0} at address {1} / 0x{1:x} failed.", CurrentBlock, Pos));
                 }
-                else
-                {
-                    OnInstallProgress(15 + (int)(((double)Pos / Data.Length) * 45), (BlockCnt>1?"Uploading last block":"Data block uploaded."));
 
-                    SendData.Add((byte)'C');
-                    SendData.Add(0x80);
-                    Send(SendData.ToArray());
-                    break;
-                }
-                Pos += BufferSize;
-            } while (true);
 
-            DateTime S = DateTime.Now;
-            do
-            {
-                Thread.Sleep(10);
-            } while (BytesWaiting() < 1 && (DateTime.Now - S).TotalMilliseconds < 500);
-            Thread.Sleep(10);
-            byte[] R = ReadAll();
-
-            if (R.Length != 1 || R[0] != 'A')
-            {
-                throw new Exception("Installing firmware failed. No ack after programming.");
 
             }
-            OnInstallProgress(60, "Firmware upload complete.");
 
-            //Firmware has been installed, now verify
 
-            OnInstallProgress(60, "Verifying firmware.");
-            Send(new byte[] { (byte)'C', 7 });
-            for (int i = 0; i < Data.Length; i++)
-            {
-                if (Data[i] != 'C')
-                {
-                    Send(Data[i]);
-                }
-                else
-                {
-                    Send((byte)'C');
-                    Send((byte)'C' + 0x80);
-                }
-                if ((i % 50) == 0)
-                {
-                    OnInstallProgress(60 + (int)(((double)i / Data.Length) * 39));
-                }
-            }
-            Send((byte)'C');
-            Send( 0x80);
-
-            S = DateTime.Now;
-            do
-            {
-                Thread.Sleep(10);
-            } while (BytesWaiting() < 1 && (DateTime.Now - S).TotalMilliseconds < 500);
-            R = ReadAll();
-
-            if (R.Length != 1 || R[0] != 'A')
-            {
-                throw new Exception("Verify failed");
-
-            }
-            OnInstallProgress(99, "Firmware veryfication complete and OK.");
+            OnInstallProgress(99, "Firmware upload and veryfication complete and OK.");
 
             OnInstallProgress(100, "Firmware installation complete.");
 
         }
 
+
+
+
+
         public event EventHandler<ProgressEventArgs> InstallProgress;
         /// <summary>
         /// Occurs when the class is MyEvent
         /// </summary>
-        protected void OnInstallProgress(int Percentage, string Text="")
+        protected void OnInstallProgress(int Percentage, string Text = "")
         {
             if (InstallProgress != null)
             {
@@ -575,7 +611,7 @@ namespace LedStripController_Configurator
             }
         }
 
-        public class ProgressEventArgs:EventArgs
+        public class ProgressEventArgs : EventArgs
         {
             public int Percentage { get; set; }
             public string Text { get; set; }

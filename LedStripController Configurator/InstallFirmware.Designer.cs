@@ -33,9 +33,9 @@
             this.NextButton = new System.Windows.Forms.Button();
             this.BackButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
-            this.FinishButton = new System.Windows.Forms.Button();
             this.Wizard = new System.Windows.Forms.TablessTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.ControllerMessage = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.UserFlashText = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -62,11 +62,6 @@
             this.SelectFirmwareFileButton = new System.Windows.Forms.Button();
             this.FirmwareFilename = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.ConfirmText = new System.Windows.Forms.Label();
-            this.Confirm = new System.Windows.Forms.ComboBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.InstallationStatusText = new System.Windows.Forms.TextBox();
             this.InstallationStartButton = new System.Windows.Forms.Button();
@@ -74,11 +69,9 @@
             this.InstallationFailedText = new System.Windows.Forms.Label();
             this.InstallationCompleteText = new System.Windows.Forms.Label();
             this.InstallationProgress = new System.Windows.Forms.ProgressBar();
-            this.ControllerMessage = new System.Windows.Forms.Label();
             this.Wizard.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,18 +114,6 @@
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // FinishButton
-            // 
-            this.FinishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.FinishButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.FinishButton.Location = new System.Drawing.Point(600, 315);
-            this.FinishButton.Name = "FinishButton";
-            this.FinishButton.Size = new System.Drawing.Size(132, 23);
-            this.FinishButton.TabIndex = 5;
-            this.FinishButton.Text = "Finish";
-            this.FinishButton.UseVisualStyleBackColor = true;
-            this.FinishButton.Click += new System.EventHandler(this.FinishButton_Click);
-            // 
             // Wizard
             // 
             this.Wizard.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -140,7 +121,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Wizard.Controls.Add(this.tabPage1);
             this.Wizard.Controls.Add(this.tabPage2);
-            this.Wizard.Controls.Add(this.tabPage3);
             this.Wizard.Controls.Add(this.tabPage4);
             this.Wizard.Location = new System.Drawing.Point(0, 0);
             this.Wizard.Name = "Wizard";
@@ -173,6 +153,17 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Confirm Controller";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // ControllerMessage
+            // 
+            this.ControllerMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.ControllerMessage.Location = new System.Drawing.Point(8, 171);
+            this.ControllerMessage.Name = "ControllerMessage";
+            this.ControllerMessage.Size = new System.Drawing.Size(712, 70);
+            this.ControllerMessage.TabIndex = 14;
+            this.ControllerMessage.Text = "ControllerMessage";
             // 
             // label10
             // 
@@ -433,68 +424,6 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Firmware File:";
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.label12);
-            this.tabPage3.Controls.Add(this.label13);
-            this.tabPage3.Controls.Add(this.ConfirmText);
-            this.tabPage3.Controls.Add(this.Confirm);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(728, 283);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Confirm installation";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // label12
-            // 
-            this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(8, 259);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(45, 13);
-            this.label12.TabIndex = 8;
-            this.label12.Text = "Confirm:";
-            // 
-            // label13
-            // 
-            this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(8, 550);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(45, 13);
-            this.label13.TabIndex = 7;
-            this.label13.Text = "Confirm:";
-            // 
-            // ConfirmText
-            // 
-            this.ConfirmText.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ConfirmText.Location = new System.Drawing.Point(8, 3);
-            this.ConfirmText.Name = "ConfirmText";
-            this.ConfirmText.Size = new System.Drawing.Size(716, 250);
-            this.ConfirmText.TabIndex = 6;
-            this.ConfirmText.Text = "ConfirmText";
-            // 
-            // Confirm
-            // 
-            this.Confirm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Confirm.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Append;
-            this.Confirm.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.Confirm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.Confirm.FormattingEnabled = true;
-            this.Confirm.Items.AddRange(new object[] {
-            "Do not install!",
-            "Install firmware on controller"});
-            this.Confirm.Location = new System.Drawing.Point(88, 256);
-            this.Confirm.Name = "Confirm";
-            this.Confirm.Size = new System.Drawing.Size(636, 21);
-            this.Confirm.TabIndex = 5;
-            this.Confirm.SelectedIndexChanged += new System.EventHandler(this.Confirm_SelectedIndexChanged);
-            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.InstallationStatusText);
@@ -588,23 +517,11 @@
             this.InstallationProgress.TabIndex = 0;
             this.InstallationProgress.Value = 50;
             // 
-            // ControllerMessage
-            // 
-            this.ControllerMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.ControllerMessage.Location = new System.Drawing.Point(8, 171);
-            this.ControllerMessage.Name = "ControllerMessage";
-            this.ControllerMessage.Size = new System.Drawing.Size(712, 70);
-            this.ControllerMessage.TabIndex = 14;
-            this.ControllerMessage.Text = "ControllerMessage";
-            // 
             // InstallFirmware
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(736, 341);
-            this.Controls.Add(this.FinishButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.NextButton);
@@ -618,8 +535,6 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
@@ -646,7 +561,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.CheckBox ControllerConfirm;
-        private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label UserFlashText;
         private System.Windows.Forms.Label label8;
@@ -659,10 +573,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label FileStateText;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button FinishButton;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label ConfirmText;
-        private System.Windows.Forms.ComboBox Confirm;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label InstallationFailedText;
         private System.Windows.Forms.Label InstallationCompleteText;
@@ -670,7 +580,6 @@
         private System.Windows.Forms.Label InstallationPleaseWaitText;
         private System.Windows.Forms.Button InstallationStartButton;
         private System.Windows.Forms.TextBox InstallationStatusText;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label FileDate;
         private System.Windows.Forms.Label ControllerMessage;

@@ -83,34 +83,24 @@ namespace LedStripController_Configurator
 
             bool BackEnabled = false;
             bool NextEnabled = false;
-            bool FinishEnabled = false;
             switch (WizardStep)
             {
                 case 0:
                     NextEnabled = ControllerConfirm.Checked;
-                    Confirm.SelectedIndex = -1;
                     break;
                 case 1:
                     NextEnabled = HexFileOK.Checked;
-                    Confirm.SelectedIndex = -1;
 
                     BackEnabled = true;
                     break;
-                case 2:
-                    NextEnabled = (Confirm.SelectedIndex == 1);
-                    BackEnabled = true;
-                    break;
                 case 3:
-                    FinishEnabled = InstallationCompleteText.Visible || InstallationFailedText.Visible;
 
                     break;
             }
 
-            ConfirmText.Text = "Please confirm that you want to update the controller '" + DescriptionText.Text + "' with the hex file '" + FirmwareFilename.Text + "'.\n\nAre you sure you want to continue?";
 
             BackButton.Enabled = BackEnabled;
             NextButton.Enabled = NextEnabled;
-            FinishButton.Enabled = FinishEnabled;
         }
 
         private void NextButton_Click(object sender, EventArgs e)
@@ -221,14 +211,14 @@ namespace LedStripController_Configurator
                 B.InstallProgress -= new EventHandler<BootLoader.ProgressEventArgs>(Bootloader_InstallProgress);
 
                 InstallLog.Add("");
-                InstallLog.Add("Bootloader installation successful.");
+                InstallLog.Add("Firmware installation successful.");
                 RefreshInstallationData(100, InstallLog, BootLoaderInstallResult.Success);
 
             }
             catch (Exception E)
             {
                 InstallLog.Add("");
-                InstallLog.Add("Bootloader installation failed.");
+                InstallLog.Add("Firmware installation failed.");
                 InstallLog.Add(E.Message);
                 if (E.InnerException != null)
                 {

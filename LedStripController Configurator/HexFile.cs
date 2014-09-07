@@ -43,14 +43,14 @@ namespace LedStripController_Configurator
                 {
                     case HexFileRecordType.DataRecord:
                         if(L.Address+L.NumBytes+AdressOffset>MaxAdress) {
-                            MaxAdress=L.Address + L.NumBytes + AdressOffset;
+                            MaxAdress=(int)L.Address + L.NumBytes + AdressOffset;
                         }
                         break;
                     case HexFileRecordType.EndOfFileRecord:
                         DoneFlag = true;
                         break;
                     case HexFileRecordType.ExtendedSegmentAddressRecord:
-                        AdressOffset = L.Address;
+                        AdressOffset = (int)L.Address;
                         break;
                     default:
                         throw new Exception("Unsupported record type");
@@ -79,7 +79,7 @@ namespace LedStripController_Configurator
                         DoneFlag = true;
                         break;
                     case HexFileRecordType.ExtendedSegmentAddressRecord:
-                        AdressOffset = L.Address;
+                        AdressOffset = (int)L.Address;
                         break;
                     default:
                         throw new Exception("Unsupported record type");
