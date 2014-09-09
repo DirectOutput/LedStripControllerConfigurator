@@ -169,20 +169,20 @@ namespace LedStripController_Configurator
                                     else
                                     {
                                         //Write failed
-                                        MessageBox.Show(this, "Writing data to device with serial " + CurrentOtherDevice.SerialNumber + " failed.\nCould not define LedStrip Controller.", "Define LedStrip controller failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                        MessageBox.Show(this, "Writing data to device with serial " + CurrentOtherDevice.SerialNumber + " failed.\nCould not define Direct Strip Controller.", "Define Direct Strip controller failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                     }
                                 }
                                 else
                                 {
                                     //Could not read eeprom
-                                    MessageBox.Show(this, "Reading data from device with serial " + CurrentOtherDevice.SerialNumber + " failed.\nCould not define LedStrip Controller.", "Define LedStrip controller failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(this, "Reading data from device with serial " + CurrentOtherDevice.SerialNumber + " failed.\nCould not define Direct Strip Controller.", "Define Direct Strip Controller failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
 
 
                                 if (F.CyclePort() != FTDI.FT_STATUS.FT_OK)
                                 {
                                     //Close failed
-                                    MessageBox.Show(this, "A error occured when closing device with serial " + CurrentOtherDevice.SerialNumber + " .\nPlease check if the definition process has been successfull.", "Define LedStrip controller error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    MessageBox.Show(this, "A error occured when closing device with serial " + CurrentOtherDevice.SerialNumber + " .\nPlease check if the definition process has been successfull.", "Define Direct Strip Controller error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
 
                                 DateTime Start = DateTime.Now;
@@ -209,14 +209,14 @@ namespace LedStripController_Configurator
                             else
                             {
                                 //Could not open device
-                                MessageBox.Show(this, "Opening device with serial " + CurrentOtherDevice.SerialNumber + " failed.\nCould not define LedStrip Controller.", "Define LedStrip controller failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                MessageBox.Show(this, "Opening device with serial " + CurrentOtherDevice.SerialNumber + " failed.\nCould not define Direct Strip Controller.", "Define Direct Strip Controller failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
 
                             W.Close();
 
                             if (OK)
                             {
-                                MessageBox.Show(this, "Device successfully defined as " + EE.Description, "LedStrip controller defined", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                MessageBox.Show(this, "Device successfully defined as " + EE.Description, "Direct Strip Controller defined", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }
                         else
@@ -452,6 +452,7 @@ namespace LedStripController_Configurator
             I.Close();
             I.Dispose();
 
+            RefreshLists_Click(sender, e);
 
 
 

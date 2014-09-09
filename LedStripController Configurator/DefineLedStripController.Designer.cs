@@ -58,8 +58,8 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(562, 50);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Defining a USB device as a LedStrip controller can render your USB device unusabl" +
-    "e if it is not a FT245R based LedStrip controller.\r\nUse this function only if yo" +
+            this.label2.Text = "Defining a USB device as a Direct Strip Controller can render your USB device unusabl" +
+    "e if it is not a FT245R based Direct Strip Controller.\r\nUse this function only if yo" +
     "u know what you are doing!";
             // 
             // label3

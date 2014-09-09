@@ -224,12 +224,12 @@ namespace LedStripController_Configurator
                                     {
                                         //Same firmware
                                         HexFileConfirm.Visible = true;
-                                        FileStateText.Text = "The same firmware is currently installed on your controller. Please confirm that you want to install this firmware.";
+                                        FileStateText.Text = "WARNING! " + System.Environment.NewLine + "The firmware version with the same number is currently installed on your controller. " + System.Environment.NewLine + "Please confirm that you want to install this firmware.";
                                     }
                                     else if (V < O)
                                     {
                                         //old firmware
-                                        FileStateText.Text = "WARNING! A new firmware is currently installed on your controller. Please confirm that you want to install this firmware.";
+                                        FileStateText.Text = "WARNING! " + System.Environment.NewLine + "A firmware version with a higher number is currently installed on your controller. " + System.Environment.NewLine + "Please confirm that you want to install this firmware.";
                                         HexFileConfirm.Visible = true;
 
                                     }
@@ -254,13 +254,13 @@ namespace LedStripController_Configurator
                             else
                             {
                                 //Wrong Hardware
-                                FileStateText.Text = "The firmware in file " + Filename + " has been designed for another hardware revision." + System.Environment.NewLine + "Your controller has hardware revision " + HardwareRevisionText.Text + "Please use a matching firmware file.";
+                                FileStateText.Text = "ERROR! " + System.Environment.NewLine + "The firmware in file " + Filename + " has been designed for another hardware revision." + System.Environment.NewLine + "Your controller has hardware revision " + HardwareRevisionText.Text + ". " + System.Environment.NewLine + "Please use a matching firmware file.";
                             }
                         }
                         else
                         {
                             //Invalid file
-                            FileStateText.Text = "The file " + Filename + " is not a valid firmware file." + System.Environment.NewLine + "Firmware version and supported hardware revision not found.";
+                            FileStateText.Text = "ERROR! The file " + Filename + " is not a valid firmware file." + System.Environment.NewLine + "Firmware version and supported hardware revision not found.";
                         }
 
                     }
