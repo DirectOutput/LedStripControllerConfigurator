@@ -23,27 +23,21 @@ namespace LedStripController_Configurator.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("WS2811 Strip Controller ")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Direct Strip Controller ")]
         public string LedStripControllerDeviceDescriptionBase {
             get {
                 return ((string)(this["LedStripControllerDeviceDescriptionBase"]));
             }
-            set {
-                this["LedStripControllerDeviceDescriptionBase"] = value;
-            }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Direct Strip Controller")]
         public string BootLoaderPassword {
             get {
                 return ((string)(this["BootLoaderPassword"]));
-            }
-            set {
-                this["BootLoaderPassword"] = value;
             }
         }
     }

@@ -35,6 +35,12 @@
             this.CancelButton = new System.Windows.Forms.Button();
             this.Wizard = new System.Windows.Forms.TablessTabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.HardwareRevisionText = new System.Windows.Forms.Label();
+            this.BootloaderVersionText = new System.Windows.Forms.Label();
+            this.CurrentFirmwareVersionText = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
             this.ControllerMessage = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.UserFlashText = new System.Windows.Forms.Label();
@@ -51,10 +57,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.HexFileConfirm = new System.Windows.Forms.CheckBox();
+            this.NewHardwareRevisionText = new System.Windows.Forms.Label();
+            this.NewFirmwareVersionText = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.FileDate = new System.Windows.Forms.Label();
             this.FileStateText = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.BinarySizeText = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -69,6 +79,7 @@
             this.InstallationFailedText = new System.Windows.Forms.Label();
             this.InstallationCompleteText = new System.Windows.Forms.Label();
             this.InstallationProgress = new System.Windows.Forms.ProgressBar();
+            this.FinishButton = new System.Windows.Forms.Button();
             this.Wizard.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -131,6 +142,12 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.HardwareRevisionText);
+            this.tabPage1.Controls.Add(this.BootloaderVersionText);
+            this.tabPage1.Controls.Add(this.CurrentFirmwareVersionText);
+            this.tabPage1.Controls.Add(this.label15);
+            this.tabPage1.Controls.Add(this.label13);
+            this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.ControllerMessage);
             this.tabPage1.Controls.Add(this.label10);
             this.tabPage1.Controls.Add(this.UserFlashText);
@@ -153,6 +170,60 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Confirm Controller";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // HardwareRevisionText
+            // 
+            this.HardwareRevisionText.AutoSize = true;
+            this.HardwareRevisionText.Location = new System.Drawing.Point(423, 103);
+            this.HardwareRevisionText.Name = "HardwareRevisionText";
+            this.HardwareRevisionText.Size = new System.Drawing.Size(41, 13);
+            this.HardwareRevisionText.TabIndex = 20;
+            this.HardwareRevisionText.Text = "label16";
+            // 
+            // BootloaderVersionText
+            // 
+            this.BootloaderVersionText.AutoSize = true;
+            this.BootloaderVersionText.Location = new System.Drawing.Point(423, 34);
+            this.BootloaderVersionText.Name = "BootloaderVersionText";
+            this.BootloaderVersionText.Size = new System.Drawing.Size(41, 13);
+            this.BootloaderVersionText.TabIndex = 19;
+            this.BootloaderVersionText.Text = "label16";
+            // 
+            // CurrentFirmwareVersionText
+            // 
+            this.CurrentFirmwareVersionText.AutoSize = true;
+            this.CurrentFirmwareVersionText.Location = new System.Drawing.Point(423, 57);
+            this.CurrentFirmwareVersionText.Name = "CurrentFirmwareVersionText";
+            this.CurrentFirmwareVersionText.Size = new System.Drawing.Size(41, 13);
+            this.CurrentFirmwareVersionText.TabIndex = 18;
+            this.CurrentFirmwareVersionText.Text = "label16";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(290, 57);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(97, 13);
+            this.label15.TabIndex = 17;
+            this.label15.Text = "Hardware Revision";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(290, 34);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(99, 13);
+            this.label13.TabIndex = 16;
+            this.label13.Text = "Bootloader Version:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(290, 103);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(127, 13);
+            this.label12.TabIndex = 15;
+            this.label12.Text = "Current Firmware Version;";
             // 
             // ControllerMessage
             // 
@@ -297,10 +368,14 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.HexFileConfirm);
+            this.tabPage2.Controls.Add(this.NewHardwareRevisionText);
+            this.tabPage2.Controls.Add(this.NewFirmwareVersionText);
+            this.tabPage2.Controls.Add(this.label17);
+            this.tabPage2.Controls.Add(this.label16);
             this.tabPage2.Controls.Add(this.label14);
             this.tabPage2.Controls.Add(this.FileDate);
             this.tabPage2.Controls.Add(this.FileStateText);
-            this.tabPage2.Controls.Add(this.label11);
             this.tabPage2.Controls.Add(this.BinarySizeText);
             this.tabPage2.Controls.Add(this.label9);
             this.tabPage2.Controls.Add(this.label6);
@@ -316,10 +391,58 @@
             this.tabPage2.Text = "Select firmware file";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // HexFileConfirm
+            // 
+            this.HexFileConfirm.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.HexFileConfirm.AutoSize = true;
+            this.HexFileConfirm.Location = new System.Drawing.Point(11, 260);
+            this.HexFileConfirm.Name = "HexFileConfirm";
+            this.HexFileConfirm.Size = new System.Drawing.Size(248, 17);
+            this.HexFileConfirm.TabIndex = 18;
+            this.HexFileConfirm.Text = "Yes, I really want to install this firmware version.";
+            this.HexFileConfirm.UseVisualStyleBackColor = true;
+            this.HexFileConfirm.CheckedChanged += new System.EventHandler(this.HexFileConfirm_CheckedChanged);
+            // 
+            // NewHardwareRevisionText
+            // 
+            this.NewHardwareRevisionText.AutoSize = true;
+            this.NewHardwareRevisionText.Location = new System.Drawing.Point(174, 119);
+            this.NewHardwareRevisionText.Name = "NewHardwareRevisionText";
+            this.NewHardwareRevisionText.Size = new System.Drawing.Size(41, 13);
+            this.NewHardwareRevisionText.TabIndex = 17;
+            this.NewHardwareRevisionText.Text = "label18";
+            // 
+            // NewFirmwareVersionText
+            // 
+            this.NewFirmwareVersionText.AutoSize = true;
+            this.NewFirmwareVersionText.Location = new System.Drawing.Point(174, 92);
+            this.NewFirmwareVersionText.Name = "NewFirmwareVersionText";
+            this.NewFirmwareVersionText.Size = new System.Drawing.Size(41, 13);
+            this.NewFirmwareVersionText.TabIndex = 16;
+            this.NewFirmwareVersionText.Text = "label18";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(8, 119);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(160, 13);
+            this.label17.TabIndex = 15;
+            this.label17.Text = "Firmware for Hardware Revision:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(8, 92);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(89, 13);
+            this.label16.TabIndex = 14;
+            this.label16.Text = "Firmware version:";
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(8, 102);
+            this.label14.Location = new System.Drawing.Point(8, 67);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(49, 13);
             this.label14.TabIndex = 13;
@@ -328,7 +451,7 @@
             // FileDate
             // 
             this.FileDate.AutoSize = true;
-            this.FileDate.Location = new System.Drawing.Point(98, 102);
+            this.FileDate.Location = new System.Drawing.Point(174, 67);
             this.FileDate.Name = "FileDate";
             this.FileDate.Size = new System.Drawing.Size(41, 13);
             this.FileDate.TabIndex = 12;
@@ -336,26 +459,18 @@
             // 
             // FileStateText
             // 
-            this.FileStateText.AutoSize = true;
-            this.FileStateText.Location = new System.Drawing.Point(98, 75);
+            this.FileStateText.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FileStateText.Location = new System.Drawing.Point(8, 157);
             this.FileStateText.Name = "FileStateText";
-            this.FileStateText.Size = new System.Drawing.Size(41, 13);
+            this.FileStateText.Size = new System.Drawing.Size(714, 91);
             this.FileStateText.TabIndex = 11;
             this.FileStateText.Text = "label12";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 75);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(52, 13);
-            this.label11.TabIndex = 10;
-            this.label11.Text = "File state:";
             // 
             // BinarySizeText
             // 
             this.BinarySizeText.AutoSize = true;
-            this.BinarySizeText.Location = new System.Drawing.Point(98, 43);
+            this.BinarySizeText.Location = new System.Drawing.Point(174, 43);
             this.BinarySizeText.Name = "BinarySizeText";
             this.BinarySizeText.Size = new System.Drawing.Size(77, 13);
             this.BinarySizeText.TabIndex = 9;
@@ -372,7 +487,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 43);
+            this.label6.Location = new System.Drawing.Point(8, 43);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(84, 13);
             this.label6.TabIndex = 7;
@@ -380,14 +495,13 @@
             // 
             // HexFileOK
             // 
-            this.HexFileOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.HexFileOK.AutoSize = true;
             this.HexFileOK.Enabled = false;
-            this.HexFileOK.Location = new System.Drawing.Point(11, 252);
+            this.HexFileOK.Location = new System.Drawing.Point(599, 119);
             this.HexFileOK.Name = "HexFileOK";
-            this.HexFileOK.Size = new System.Drawing.Size(89, 17);
+            this.HexFileOK.Size = new System.Drawing.Size(109, 17);
             this.HexFileOK.TabIndex = 6;
-            this.HexFileOK.Text = "Hex file is ok.";
+            this.HexFileOK.Text = "Firmware file is ok";
             this.HexFileOK.UseVisualStyleBackColor = true;
             this.HexFileOK.Visible = false;
             // 
@@ -517,11 +631,23 @@
             this.InstallationProgress.TabIndex = 0;
             this.InstallationProgress.Value = 50;
             // 
+            // FinishButton
+            // 
+            this.FinishButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.FinishButton.Location = new System.Drawing.Point(600, 315);
+            this.FinishButton.Name = "FinishButton";
+            this.FinishButton.Size = new System.Drawing.Size(132, 23);
+            this.FinishButton.TabIndex = 5;
+            this.FinishButton.Text = "Finish";
+            this.FinishButton.UseVisualStyleBackColor = true;
+            this.FinishButton.Click += new System.EventHandler(this.FinishButton_Click);
+            // 
             // InstallFirmware
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(736, 341);
+            this.Controls.Add(this.FinishButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.BackButton);
             this.Controls.Add(this.NextButton);
@@ -572,7 +698,6 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label FileStateText;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.Label InstallationFailedText;
         private System.Windows.Forms.Label InstallationCompleteText;
@@ -583,5 +708,17 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label FileDate;
         private System.Windows.Forms.Label ControllerMessage;
+        private System.Windows.Forms.Label HardwareRevisionText;
+        private System.Windows.Forms.Label BootloaderVersionText;
+        private System.Windows.Forms.Label CurrentFirmwareVersionText;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label NewHardwareRevisionText;
+        private System.Windows.Forms.Label NewFirmwareVersionText;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.CheckBox HexFileConfirm;
+        private System.Windows.Forms.Button FinishButton;
     }
 }

@@ -254,6 +254,59 @@ namespace LedStripController_Configurator
         }
 
 
+        public string GetFirmwareVersion()
+        {
+
+            if (!BootLoaderStarted)
+            {
+                throw new Exception("Bootloader has not been started.");
+            }
+            ReadAll();
+            Send((byte)'8');
+
+            DateTime Start = DateTime.Now;
+            do
+            {
+                Thread.Sleep(10);
+            } while (BytesWaiting() < 2 && (DateTime.Now - Start).TotalMilliseconds < 30);
+            byte[] ReceiveBuffer = ReadAll();
+
+            if (ReceiveBuffer.Length < 3 || ReceiveBuffer[0] > ReceiveBuffer.Length - 2 || ReceiveBuffer[ReceiveBuffer.Length - 1] != (byte)'O')
+            {
+                throw new Exception("Could not read firmware version");
+            }
+
+            return System.Text.Encoding.UTF8.GetString(ReceiveBuffer.Where((B, I) => I > 0 && I <= ReceiveBuffer[0]).ToArray());
+        }
+
+
+        public string GetFirmwareHardwareRevision()
+        {
+
+            if (!BootLoaderStarted)
+            {
+                throw new Exception("Bootloader has not been started.");
+            }
+            ReadAll();
+            Send((byte)'9');
+
+            DateTime Start = DateTime.Now;
+            do
+            {
+                Thread.Sleep(10);
+            } while (BytesWaiting() < 2 && (DateTime.Now - Start).TotalMilliseconds < 30);
+            byte[] ReceiveBuffer = ReadAll();
+
+            if (ReceiveBuffer.Length < 3 || ReceiveBuffer[0] > ReceiveBuffer.Length - 2 || ReceiveBuffer[ReceiveBuffer.Length - 1] != (byte)'O')
+            {
+                throw new Exception("Could not read firmware hardware revision");
+            }
+
+            return System.Text.Encoding.UTF8.GetString(ReceiveBuffer.Where((B, I) => I > 0 && I <= ReceiveBuffer[0]).ToArray());
+        }
+
+
+
         public string GetBootloaderVersion()
         {
 
@@ -262,7 +315,7 @@ namespace LedStripController_Configurator
                 throw new Exception("Bootloader has not been started.");
             }
             ReadAll();
-            Send((byte)'2');
+            Send((byte)'1');
 
             DateTime Start = DateTime.Now;
             do
@@ -279,6 +332,30 @@ namespace LedStripController_Configurator
             return System.Text.Encoding.UTF8.GetString(ReceiveBuffer.Where((B, I) => I > 0 && I < ReceiveBuffer.Length - 1).ToArray());
         }
 
+        public string GetHardwareRevision()
+        {
+
+            if (!BootLoaderStarted)
+            {
+                throw new Exception("Bootloader has not been started.");
+            }
+            ReadAll();
+            Send((byte)'5');
+
+            DateTime Start = DateTime.Now;
+            do
+            {
+                Thread.Sleep(10);
+            } while (BytesWaiting() < 2 && (DateTime.Now - Start).TotalMilliseconds < 30);
+            byte[] ReceiveBuffer = ReadAll();
+
+            if (ReceiveBuffer.Length < 3 || ReceiveBuffer[0] != ReceiveBuffer.Length - 1 || ReceiveBuffer[ReceiveBuffer.Length - 1] != (byte)'O')
+            {
+                throw new Exception("Could not read hardware revision version");
+            }
+
+            return System.Text.Encoding.UTF8.GetString(ReceiveBuffer.Where((B, I) => I > 0 && I < ReceiveBuffer.Length - 1).ToArray());
+        }
 
         public int GetBufferSize()
         {
@@ -289,7 +366,7 @@ namespace LedStripController_Configurator
             }
             ReadAll();
 
-            Send((byte)'3');
+            Send((byte)'2');
             DateTime Start = DateTime.Now;
             do
             {
@@ -318,7 +395,7 @@ namespace LedStripController_Configurator
             }
             ReadAll();
 
-            Send((byte)'4');
+            Send((byte)'3');
             DateTime Start = DateTime.Now;
             do
             {
@@ -359,7 +436,7 @@ namespace LedStripController_Configurator
             }
             ReadAll();
 
-            Send((byte)'5');
+            Send((byte)'4');
             DateTime Start = DateTime.Now;
             do
             {

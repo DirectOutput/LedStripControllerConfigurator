@@ -44,6 +44,20 @@ namespace LedStripController_Configurator
                 BufferSizeText.Text = S.ToString() + " / 0x" + S.ToString("X");
                 S = B.GetUserFlashSize();
                 UserFlashText.Text = S.ToString() + " / 0x" + S.ToString("X");
+
+                BootloaderVersionText.Text = B.GetBootloaderVersion();
+                HardwareRevisionText.Text = B.GetHardwareRevision();
+
+                try
+                {
+                    CurrentFirmwareVersionText.Text = B.GetFirmwareVersion();
+                }
+                catch
+                {
+                    CurrentFirmwareVersionText.Text = "<unknown>";
+                }
+
+
                 ControllerConfirm.Enabled = true;
                 ControllerMessage.Text = "Controller accessible. Please confirm that you want to install the firmware on this controller.";
 
@@ -83,24 +97,28 @@ namespace LedStripController_Configurator
 
             bool BackEnabled = false;
             bool NextEnabled = false;
+            bool FinishEnabled = false;
             switch (WizardStep)
             {
                 case 0:
                     NextEnabled = ControllerConfirm.Checked;
                     break;
                 case 1:
-                    NextEnabled = HexFileOK.Checked;
+                    NextEnabled = HexFileOK.Checked && HexFileConfirm.Checked;
 
                     BackEnabled = true;
                     break;
-                case 3:
-
+                case 2:
+                    NextEnabled = false;
+                    BackEnabled = !InstallComplete;
+                    FinishEnabled = InstallComplete;
                     break;
             }
 
 
             BackButton.Enabled = BackEnabled;
             NextButton.Enabled = NextEnabled;
+            FinishButton.Enabled = FinishEnabled;
         }
 
         private void NextButton_Click(object sender, EventArgs e)
@@ -155,9 +173,14 @@ namespace LedStripController_Configurator
             HexFileOK.Checked = false;
             FileStateText.Text = "";
             FileDate.Text = "";
+            HexFileConfirm.Checked = false;
+            HexFileConfirm.Visible = false;
+            NewFirmwareVersionText.Text = "";
+            NewHardwareRevisionText.Text = "";
 
             string Filename = ("" + FirmwareFilename.Text).Trim();
             int L = -1;
+            byte[] B;
             if (!string.IsNullOrWhiteSpace(Filename))
             {
                 FileInfo FI = new FileInfo(Filename);
@@ -169,10 +192,76 @@ namespace LedStripController_Configurator
                     {
                         HexFile H = new HexFile();
                         H.LoadFile(Filename);
-                        L = H.GetBinaryData().Length;
-                        HexFileOK.Checked = true;
+                        B = H.GetBinaryData();
+                        L = B.Length;
+
+
                         BinarySizeText.Text = L.ToString() + " / 0x" + L.ToString("X") + " bytes";
-                        FileStateText.Text = "File is OK.";
+
+
+                        byte CheckSum = 0x55;
+                        for (int i = 0; i < 31; i++)
+                        {
+                            CheckSum ^= B[0x70 * 2 + i];
+                        }
+                        if (CheckSum == 0)
+                        {
+
+                            string HWRevision = System.Text.Encoding.UTF8.GetString(B.Where((C, I) => I > (0x70 * 2 + 16) && I <= (0x70 * 2 + 16) + B[(0x70 * 2 + 16)]).ToArray());
+                            string Version = System.Text.Encoding.UTF8.GetString(B.Where((C, I) => I > (0x70 * 2) && I <= (0x70 * 2) + B[(0x70 * 2)]).ToArray());
+
+                            NewFirmwareVersionText.Text = Version;
+                            NewHardwareRevisionText.Text = HWRevision;
+
+                            if (HWRevision == HardwareRevisionText.Text)
+                            {
+                                if (!string.IsNullOrWhiteSpace(CurrentFirmwareVersionText.Text))
+                                {
+                                    Version V = new System.Version(Version);
+                                    Version O = new System.Version(CurrentFirmwareVersionText.Text);
+
+                                    if (V == O)
+                                    {
+                                        //Same firmware
+                                        HexFileConfirm.Visible = true;
+                                        FileStateText.Text = "The same firmware is currently installed on your controller. Please confirm that you want to install this firmware.";
+                                    }
+                                    else if (V < O)
+                                    {
+                                        //old firmware
+                                        FileStateText.Text = "WARNING! A new firmware is currently installed on your controller. Please confirm that you want to install this firmware.";
+                                        HexFileConfirm.Visible = true;
+
+                                    }
+                                    else
+                                    {
+                                        //new firmware
+                                        FileStateText.Text="Firmware ready for installation.";
+                                        HexFileConfirm.Checked = true;
+                                    }
+
+                                }
+                                else
+                                {
+                                    //no existing firmware
+                                    FileStateText.Text = "Firmware ready for installation.";
+                                    HexFileConfirm.Checked = true;
+                                }
+                               
+                                HexFileOK.Checked = true;
+
+                            }
+                            else
+                            {
+                                //Wrong Hardware
+                                FileStateText.Text = "The firmware in file " + Filename + " has been designed for another hardware revision." + System.Environment.NewLine + "Your controller has hardware revision " + HardwareRevisionText.Text + "Please use a matching firmware file.";
+                            }
+                        }
+                        else
+                        {
+                            //Invalid file
+                            FileStateText.Text = "The file " + Filename + " is not a valid firmware file." + System.Environment.NewLine + "Firmware version and supported hardware revision not found.";
+                        }
 
                     }
                     catch (Exception E)
@@ -196,9 +285,11 @@ namespace LedStripController_Configurator
         }
 
 
+        bool InstallComplete = false;
         List<string> InstallLog = new List<string>();
         private void Install()
         {
+            InstallComplete = false;
             InstallLog = new List<string>();
             BootLoader B = new BootLoader();
             try
@@ -229,6 +320,7 @@ namespace LedStripController_Configurator
             B.Close();
             B = null;
 
+            InstallComplete = true;
             UpdateWizard();
         }
 
@@ -320,6 +412,12 @@ namespace LedStripController_Configurator
         {
             this.Close();
         }
+
+        private void HexFileConfirm_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateWizard();
+        }
+
 
     }
 }

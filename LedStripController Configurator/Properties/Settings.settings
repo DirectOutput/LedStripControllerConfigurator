@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="LedStripController_Configurator.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="LedStripControllerDeviceDescriptionBase" Type="System.String" Scope="User">
-      <Value Profile="(Default)">WS2811 Strip Controller </Value>
+    <Setting Name="LedStripControllerDeviceDescriptionBase" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Direct Strip Controller </Value>
     </Setting>
-    <Setting Name="BootLoaderPassword" Type="System.String" Scope="User">
+    <Setting Name="BootLoaderPassword" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Direct Strip Controller</Value>
     </Setting>
   </Settings>

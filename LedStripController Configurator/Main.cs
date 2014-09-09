@@ -64,6 +64,19 @@ namespace LedStripController_Configurator
                                 StripControllerList.Rows[RowIndex].Cells[StripControllerHasBootLoader.Name].Value = B.BootLoaderStarted;
                                 StripControllerList.Rows[RowIndex].Cells[StripControllerBootLoaderVersion.Name].Value = B.GetBootloaderVersion();
                                 StripControllerList.Rows[RowIndex].Cells[StripControllerCPU.Name].Value = B.GetControllerCPU();
+                                StripControllerList.Rows[RowIndex].Cells[StripControllerHardwareRevision.Name].Value = B.GetHardwareRevision();
+                                try
+                                {
+                                    StripControllerList.Rows[RowIndex].Cells[StripControllerFirmwareVersion.Name].Value = B.GetFirmwareVersion();
+                                    StripControllerList.Rows[RowIndex].Cells[StripControllerFirmwareHardwareRevision.Name].Value = B.GetFirmwareHardwareRevision();
+                                }
+                                catch 
+                                {
+                                    StripControllerList.Rows[RowIndex].Cells[StripControllerFirmwareVersion.Name].Value = "";
+                                    StripControllerList.Rows[RowIndex].Cells[StripControllerFirmwareHardwareRevision.Name].Value = "";
+                                }
+
+
                             }
                             catch { }
                             B.Close();
