@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.StripControllerList = new System.Windows.Forms.DataGridView();
             this.StripControllerDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -97,8 +97,8 @@
             // StripControllerNumber
             // 
             this.StripControllerNumber.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.StripControllerNumber.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.StripControllerNumber.DefaultCellStyle = dataGridViewCellStyle1;
             this.StripControllerNumber.HeaderText = "Number";
             this.StripControllerNumber.Name = "StripControllerNumber";
             this.StripControllerNumber.ReadOnly = true;
@@ -273,7 +273,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Main";
-            this.Text = "LedStripController Configurator";
+            this.Text = "Direct Strip Controller Configurator";
             this.Load += new System.EventHandler(this.Main_Load);
             ((System.ComponentModel.ISupportInitialize)(this.StripControllerList)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.OtherDeviceList)).EndInit();

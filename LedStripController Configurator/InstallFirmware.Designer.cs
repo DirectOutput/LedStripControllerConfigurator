@@ -174,7 +174,7 @@
             // HardwareRevisionText
             // 
             this.HardwareRevisionText.AutoSize = true;
-            this.HardwareRevisionText.Location = new System.Drawing.Point(423, 103);
+            this.HardwareRevisionText.Location = new System.Drawing.Point(423, 57);
             this.HardwareRevisionText.Name = "HardwareRevisionText";
             this.HardwareRevisionText.Size = new System.Drawing.Size(41, 13);
             this.HardwareRevisionText.TabIndex = 20;
@@ -192,7 +192,7 @@
             // CurrentFirmwareVersionText
             // 
             this.CurrentFirmwareVersionText.AutoSize = true;
-            this.CurrentFirmwareVersionText.Location = new System.Drawing.Point(423, 57);
+            this.CurrentFirmwareVersionText.Location = new System.Drawing.Point(423, 103);
             this.CurrentFirmwareVersionText.Name = "CurrentFirmwareVersionText";
             this.CurrentFirmwareVersionText.Size = new System.Drawing.Size(41, 13);
             this.CurrentFirmwareVersionText.TabIndex = 18;

@@ -54,7 +54,7 @@ namespace LedStripController_Configurator
                 }
                 catch
                 {
-                    CurrentFirmwareVersionText.Text = "<unknown>";
+                    CurrentFirmwareVersionText.Text = "";
                 }
 
 

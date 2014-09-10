@@ -81,7 +81,7 @@
             this.Confirm.FormattingEnabled = true;
             this.Confirm.Items.AddRange(new object[] {
             "Do not redefine this device",
-            "Define the device as a LedStripController"});
+            "Define the device as a Direct Strip Controller"});
             this.Confirm.Location = new System.Drawing.Point(126, 193);
             this.Confirm.Name = "Confirm";
             this.Confirm.Size = new System.Drawing.Size(423, 21);
@@ -184,9 +184,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "DefineLedStripController";
+            this.Name = "Define Direct Strip Controller";
             this.RightToLeftLayout = true;
-            this.Text = "Define as Led Strip Controller";
+            this.Text = "Define as Direct Strip Controller";
             this.Load += new System.EventHandler(this.DefineLedStripController_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
