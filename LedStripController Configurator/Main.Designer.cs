@@ -49,6 +49,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.InstallFirmwareButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.TestControllerButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.StripControllerList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OtherDeviceList)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -82,7 +83,7 @@
             this.StripControllerList.Name = "StripControllerList";
             this.StripControllerList.ReadOnly = true;
             this.StripControllerList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.StripControllerList.Size = new System.Drawing.Size(725, 224);
+            this.StripControllerList.Size = new System.Drawing.Size(721, 220);
             this.StripControllerList.TabIndex = 0;
             this.StripControllerList.SelectionChanged += new System.EventHandler(this.StripControllerList_SelectionChanged);
             // 
@@ -167,7 +168,7 @@
             this.OtherDeviceList.Name = "OtherDeviceList";
             this.OtherDeviceList.ReadOnly = true;
             this.OtherDeviceList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.OtherDeviceList.Size = new System.Drawing.Size(725, 125);
+            this.OtherDeviceList.Size = new System.Drawing.Size(721, 121);
             this.OtherDeviceList.TabIndex = 1;
             this.OtherDeviceList.SelectionChanged += new System.EventHandler(this.OtherDeviceList_SelectionChanged);
             // 
@@ -190,7 +191,7 @@
             // DefineAsLedStripController
             // 
             this.DefineAsLedStripController.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.DefineAsLedStripController.Location = new System.Drawing.Point(551, 134);
+            this.DefineAsLedStripController.Location = new System.Drawing.Point(547, 130);
             this.DefineAsLedStripController.Name = "DefineAsLedStripController";
             this.DefineAsLedStripController.Size = new System.Drawing.Size(177, 23);
             this.DefineAsLedStripController.TabIndex = 2;
@@ -201,7 +202,7 @@
             // ChangeControllerNumber
             // 
             this.ChangeControllerNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.ChangeControllerNumber.Location = new System.Drawing.Point(572, 233);
+            this.ChangeControllerNumber.Location = new System.Drawing.Point(568, 229);
             this.ChangeControllerNumber.Name = "ChangeControllerNumber";
             this.ChangeControllerNumber.Size = new System.Drawing.Size(156, 23);
             this.ChangeControllerNumber.TabIndex = 3;
@@ -212,7 +213,7 @@
             // RefreshLists
             // 
             this.RefreshLists.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.RefreshLists.Location = new System.Drawing.Point(551, 172);
+            this.RefreshLists.Location = new System.Drawing.Point(547, 168);
             this.RefreshLists.Name = "RefreshLists";
             this.RefreshLists.Size = new System.Drawing.Size(177, 23);
             this.RefreshLists.TabIndex = 4;
@@ -222,6 +223,7 @@
             // 
             // splitContainer1
             // 
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
@@ -229,6 +231,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.TestControllerButton);
             this.splitContainer1.Panel1.Controls.Add(this.InstallFirmwareButton);
             this.splitContainer1.Panel1.Controls.Add(this.StripControllerList);
             this.splitContainer1.Panel1.Controls.Add(this.ChangeControllerNumber);
@@ -246,7 +249,7 @@
             // InstallFirmwareButton
             // 
             this.InstallFirmwareButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.InstallFirmwareButton.Location = new System.Drawing.Point(425, 233);
+            this.InstallFirmwareButton.Location = new System.Drawing.Point(421, 229);
             this.InstallFirmwareButton.Name = "InstallFirmwareButton";
             this.InstallFirmwareButton.Size = new System.Drawing.Size(141, 23);
             this.InstallFirmwareButton.TabIndex = 4;
@@ -258,12 +261,22 @@
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(3, 123);
+            this.pictureBox1.Location = new System.Drawing.Point(3, 119);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(109, 75);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
+            // 
+            // TestControllerButton
+            // 
+            this.TestControllerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.TestControllerButton.Location = new System.Drawing.Point(3, 229);
+            this.TestControllerButton.Name = "TestControllerButton";
+            this.TestControllerButton.Size = new System.Drawing.Size(100, 23);
+            this.TestControllerButton.TabIndex = 5;
+            this.TestControllerButton.Text = "Test Controller";
+            this.TestControllerButton.UseVisualStyleBackColor = true;
             // 
             // Main
             // 
@@ -307,6 +320,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerHardwareRevision;
         private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerFirmwareVersion;
         private System.Windows.Forms.DataGridViewTextBoxColumn StripControllerFirmwareHardwareRevision;
+        private System.Windows.Forms.Button TestControllerButton;
     }
 }
 

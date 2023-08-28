@@ -8,5 +8,8 @@
     <Setting Name="BootLoaderPassword" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Direct Strip Controller</Value>
     </Setting>
+    <Setting Name="MaxBootloaderVersion" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">1.999</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

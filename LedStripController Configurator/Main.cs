@@ -48,12 +48,12 @@ namespace LedStripController_Configurator
                     {
 
                         StripControllerList.Rows.Clear();
-                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && DE.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase)).OrderBy(Co => Co.Description))
+                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && DE.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim())).OrderBy(Co => Co.Description))
                         {
                             int RowIndex = StripControllerList.Rows.Add();
                             StripControllerList.Rows[RowIndex].Tag = D;
                             StripControllerList.Rows[RowIndex].Cells[StripControllerDescription.Name].Value = D.Description;
-                            StripControllerList.Rows[RowIndex].Cells[StripControllerNumber.Name].Value = D.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Length);
+                            StripControllerList.Rows[RowIndex].Cells[StripControllerNumber.Name].Value = D.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim().Length);
                             StripControllerList.Rows[RowIndex].Cells[StripControllerSerial.Name].Value = D.SerialNumber;
                             StripControllerList.Rows[RowIndex].Cells[StripControllerHasBootLoader.Name].Value = false;
                             BootLoader B = new BootLoader();
@@ -84,7 +84,7 @@ namespace LedStripController_Configurator
                         StripControllerList.ClearSelection();
 
                         OtherDeviceList.Rows.Clear();
-                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && !DE.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase)))
+                        foreach (FTDI.FT_DEVICE_INFO_NODE D in Devicelist.Where(DE => DE.Type == FTDI.FT_DEVICE.FT_DEVICE_232R && !DE.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim())))
                         {
                             int RowIndex = OtherDeviceList.Rows.Add();
                             OtherDeviceList.Rows[RowIndex].Tag = D;
@@ -159,7 +159,7 @@ namespace LedStripController_Configurator
 
                                 if (F.ReadFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                 {
-                                    EE.Description = Properties.Settings.Default.LedStripControllerDeviceDescriptionBase + Nr.ToString();
+                                    EE.Description = Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim() +" " + Nr.ToString();
 
                                     if (F.WriteFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                     {
@@ -281,11 +281,12 @@ namespace LedStripController_Configurator
 
         private void UpdateSelectionDependencies()
         {
-            if (StripControllerList.SelectedRows.Count > 0)
+            if (StripControllerList.Rows.Count>0 && StripControllerList.SelectedRows.Count > 0)
             {
                 CurrentStripController = (FTDI.FT_DEVICE_INFO_NODE)StripControllerList.SelectedRows[0].Tag;
                 ChangeControllerNumber.Enabled = true;
-                InstallFirmwareButton.Enabled = true;
+                object V = StripControllerList.SelectedRows[0].Cells[StripControllerHasBootLoader.Name].Value;
+                InstallFirmwareButton.Enabled = (V==null?false:(bool)V);
             }
             else
             {
@@ -313,7 +314,7 @@ namespace LedStripController_Configurator
             if (CurrentStripController != null)
             {
 
-                uint CurrentNumber = Convert.ToUInt32(CurrentStripController.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Length));
+                uint CurrentNumber = Convert.ToUInt32(CurrentStripController.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim().Length));
 
                 ControllerNumberChange D = new ControllerNumberChange(CurrentStripController, CurrentNumber, GetValidNumbers(CurrentNumber));
 
@@ -346,7 +347,7 @@ namespace LedStripController_Configurator
 
                                 if (F.ReadFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                 {
-                                    EE.Description = Properties.Settings.Default.LedStripControllerDeviceDescriptionBase + Nr.ToString();
+                                    EE.Description = Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim()+" " + Nr.ToString();
 
                                     if (F.WriteFT232REEPROM(EE) == FTDI.FT_STATUS.FT_OK)
                                     {

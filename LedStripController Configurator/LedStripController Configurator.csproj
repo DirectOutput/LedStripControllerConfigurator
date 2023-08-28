@@ -51,6 +51,12 @@
   <ItemGroup>
     <Compile Include="AVRTypeEnum.cs" />
     <Compile Include="BootLoader.cs" />
+    <Compile Include="ControllerTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ControllerTest.Designer.cs">
+      <DependentUpon>ControllerTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="DefineLedStripController.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -90,6 +96,10 @@
     <Compile Include="TablessTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DirectStripControllerApi.cs" />
+    <EmbeddedResource Include="ControllerTest.resx">
+      <DependentUpon>ControllerTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DefineLedStripController.resx">
       <DependentUpon>DefineLedStripController.cs</DependentUpon>
     </EmbeddedResource>

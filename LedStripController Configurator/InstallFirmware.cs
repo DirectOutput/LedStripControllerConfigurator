@@ -28,7 +28,7 @@ namespace LedStripController_Configurator
         private void PopulateControllerTab()
         {
             DescriptionText.Text = CurrentStripController.Description;
-            NumberText.Text = CurrentStripController.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Length);
+            NumberText.Text = CurrentStripController.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim().Length);
             SerialText.Text = CurrentStripController.SerialNumber;
             ControllerMessage.Text = "";
             BootLoader B = new BootLoader();
@@ -57,17 +57,30 @@ namespace LedStripController_Configurator
                     CurrentFirmwareVersionText.Text = "";
                 }
 
+                Version BLVersion = new Version(BootloaderVersionText.Text);
+                Version V = new Version(Properties.Settings.Default.MaxBootloaderVersion);
+                if (V >= BLVersion)
+                {
 
-                ControllerConfirm.Enabled = true;
-                ControllerMessage.Text = "Controller accessible. Please confirm that you want to install the firmware on this controller.";
+                    ControllerConfirm.Enabled = true;
+                    ControllerConfirm.Visible = true;
+                    ControllerMessage.Text = "Controller accessible. Please confirm that you want to install the firmware on this controller.";
+                }
+                else
+                {
+                    ControllerConfirm.Enabled = false;
+                    ControllerConfirm.Checked = false;
+                    ControllerConfirm.Visible = false;
 
+                    ControllerMessage.Text = string.Format("This tool does only allow updates on controllers having a bootloader version of {0} or below, but your controller uses bootloader version {1}.\nPlease check for a updated version of this tool.",Properties.Settings.Default.MaxBootloaderVersion,BootloaderVersionText.Text);
+                }
 
             }
             catch
             {
                 ControllerConfirm.Enabled = false;
                 ControllerConfirm.Checked = false;
-
+                ControllerConfirm.Visible = false;
                 ControllerMessage.Text = "Controller not accessible. Cant install firmware.\nTo try again, close this window, make sure no other applications are accessing the controller, unplug and plugin the controller again and finnaly click the refresh button in the main window.";
 
             }

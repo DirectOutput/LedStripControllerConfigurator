@@ -40,5 +40,14 @@ namespace LedStripController_Configurator.Properties {
                 return ((string)(this["BootLoaderPassword"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1.999")]
+        public string MaxBootloaderVersion {
+            get {
+                return ((string)(this["MaxBootloaderVersion"]));
+            }
+        }
     }
 }

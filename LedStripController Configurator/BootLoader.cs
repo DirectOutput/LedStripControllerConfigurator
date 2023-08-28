@@ -27,7 +27,7 @@ namespace LedStripController_Configurator
                 if (Controller.Type == FTDI.FT_DEVICE.FT_DEVICE_232R)
                 {
                     int dummy;
-                    if (Controller.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase) && int.TryParse(Controller.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Length), out dummy))
+                    if (Controller.Description.StartsWith(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim()) && int.TryParse(Controller.Description.Substring(Properties.Settings.Default.LedStripControllerDeviceDescriptionBase.Trim().Length), out dummy))
                     {
                         FTStatus = FTDIAPI.OpenByLocation(Controller.LocId);
                         if (FTStatus == FTDI.FT_STATUS.FT_OK)
@@ -35,8 +35,17 @@ namespace LedStripController_Configurator
                             FTStatus = FTDIAPI.Purge(FTDI.FT_PURGE.FT_PURGE_RX + FTDI.FT_PURGE.FT_PURGE_TX);
                             if (FTStatus == FTDI.FT_STATUS.FT_OK)
                             {
-                                IsOpen = true;
+                                FTStatus = FTDIAPI.SetTimeouts(100, 50);
+                                if (FTStatus == FTDI.FT_STATUS.FT_OK)
+                                {
 
+
+                                    IsOpen = true;
+                                }
+                                else
+                                {
+                                    throw new Exception("Could not set timeout.");
+                                }
                             }
                             else
                             {
@@ -100,6 +109,19 @@ namespace LedStripController_Configurator
             }
         }
 
+        // funktioniert nicht
+        //public uint BytesToTransmit()
+        //{
+        //    uint Cnt = 0;
+        //    FTDI.FT_STATUS FTStatus = FTDIAPI.GetTxBytesWaiting(ref Cnt);
+        //    if (FTStatus != FTDI.FT_STATUS.FT_OK)
+        //    {
+        //        throw new Exception("Could not get number of bytes to transmit.");
+        //    }
+        //    return Cnt;
+
+        //}
+
         public uint BytesWaiting()
         {
             uint BytesToRead = 0;
@@ -153,6 +175,7 @@ namespace LedStripController_Configurator
 
         public void StartBootLoader()
         {
+            BootLoaderStarted = false;
             byte[] ReceiveBuffer;
             DateTime Start;
             bool TryAgain = false;
@@ -180,6 +203,7 @@ namespace LedStripController_Configurator
                         Thread.Sleep(10);
                         ReceiveBuffer = ReadAll();
                         if (ReceiveBuffer.Length > 0 && ReceiveBuffer[ReceiveBuffer.Length - 1] == 'N') break;
+         
                     }
                     Thread.Sleep(20);
                     ReadAll();
